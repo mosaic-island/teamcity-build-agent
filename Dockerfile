@@ -31,11 +31,23 @@ RUN wget "https://bootstrap.pypa.io/pip/2.7/get-pip.py" -O /tmp/get-pip.py \
     && pip install awscli --upgrade \
     && pip install ecs-deploy
 
-# Install Zulu 17
-RUN wget -O /tmp/zulu17.tar.gz https://cdn.azul.com/zulu/bin/zulu17.40.19-ca-jdk17.0.6-linux_x64.tar.gz
-RUN cd /opt/java/ && tar -zxvf /tmp/zulu17.tar.gz && ln -s zulu17.40.19-ca-jdk17.0.6-linux_x64 zulu-17
+# Install Corretto 17
+RUN wget -O /tmp/corretto17.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
+RUN cd /opt/java/ && tar -zxvf /tmp/corretto17.tar.gz && ln -s amazon-corretto-17.0.9.8.1-linux-x64 corretto-17
+RUN #ln -s /opt/java/amazon-corretto-17.0.9.8.1-linux-x64 /usr/lib/jvm/corretto-17
 
-ENV JDK_17_0_x64 /opt/java/zulu-17
+ENV JDK_17_0_x64 /opt/java/corretto-17
+
+# Install Corretto 21
+RUN wget -O /tmp/corretto21.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
+RUN cd /opt/java/ && tar -zxvf /tmp/corretto21.tar.gz && ln -s amazon-corretto-21.0.1.12.1-linux-x64 corretto-21
+RUN #ln -s /opt/java/amazon-corretto-21.0.1.12.1-linux-x64 /usr/lib/jvm/corretto-21
+
+ENV JDK_21_0_x64 /opt/java/corretto-21
+
+# RUN curl -s "https://get.sdkman.io?rcupdate=false" | bash
+# RUN sdk install gradle 8.0.2
+
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
